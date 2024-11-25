@@ -1,18 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Tools;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-/**
- *
- * @author Paulo Elem
- */
-
 
 public class ConexaoBD {
     
@@ -22,9 +12,9 @@ public class ConexaoBD {
     try{
       if(conexao == null){
         String driver = "org.postgresql.Driver";
-        String url = "jdbc:postgresql://localhost/Oficina_Car";
+        String url = "jdbc:postgresql://localhost:5432/Oficina_Car";
         String user = "postgres";
-        String password = "aluno";
+        String password = "admin";
                   
         Class.forName(driver);
         conexao = DriverManager.getConnection(url, user, password);
