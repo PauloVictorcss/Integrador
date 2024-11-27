@@ -9,8 +9,7 @@ public class Servico {
     public Servico() {
     }
 
-    public Servico(int id, String nome, String descricao, double valorUnitario) {
-        this.id = id;
+    public Servico(String nome, String descricao, double valorUnitario) {
         this.nome = nome;
         this.descricao = descricao;
         this.valorUnitario = valorUnitario;

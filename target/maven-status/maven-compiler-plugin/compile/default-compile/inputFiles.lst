@@ -2,6 +2,12 @@ C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Acessorio.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Cliente.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\EnumStatus.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Funcionario.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\interfaces\IAcessorioCRUD.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\interfaces\IFuncionarioCRUD.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\interfaces\IMarcaCRUD.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\interfaces\IOficinaCRUD.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\interfaces\IPecaCRUD.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\interfaces\IServicoCRUD.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Marca.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Modelo.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Oficina.java
@@ -15,4 +21,11 @@ C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Servico.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\ServicoExecutado.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\Veiculo.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\models\VeiculoAcessorio.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\persistency\AcessorioDAO.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\persistency\FuncionarioDAO.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\persistency\MarcaDAO.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\persistency\OficinaDAO.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\persistency\PecaDAO.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\persistency\ServicoDAO.java
 C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\Tools\ConexaoBD.java
+C:\Dev\PI\ProjetoIntegrador\Integrador\src\main\java\Tools\Main.java

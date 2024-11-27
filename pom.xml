@@ -5,7 +5,6 @@
     <artifactId>OficinaCar</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    
     <dependencies>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -13,11 +12,9 @@
             <version>42.7.4</version>
         </dependency>  
     </dependencies>
-        
-    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.mycompany.oficinacar.OficinaCar</exec.mainClass>
+        <exec.mainClass>Tools.Main</exec.mainClass>
     </properties>
 </project>
