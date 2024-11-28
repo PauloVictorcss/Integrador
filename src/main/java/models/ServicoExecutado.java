@@ -12,12 +12,12 @@ public class ServicoExecutado {
     private int quantidade;
     private double valorUnitario;
     private double valorTotal;
-    private String descriccao;
+    private String descricao;
 
     public ServicoExecutado() {
     }
 
-    public ServicoExecutado(int idOS, int idServico, int funcionarioId, Date dataInicio, Date dataFim, int quantidade, double valorUnitario, double valorTotal, String descriccao) {
+    public ServicoExecutado(int idOS, int idServico, int funcionarioId, Date dataInicio, Date dataFim, int quantidade, double valorUnitario, double valorTotal, String descricao) {
         this.idOS = idOS;
         this.idServico = idServico;
         this.funcionarioId = funcionarioId;
@@ -26,7 +26,7 @@ public class ServicoExecutado {
         this.quantidade = quantidade;
         this.valorUnitario = valorUnitario;
         this.valorTotal = valorTotal;
-        this.descriccao = descriccao;
+        this.descricao = descricao;
     }
 
     public int getId() {
@@ -65,8 +65,8 @@ public class ServicoExecutado {
         return valorTotal;
     }
 
-    public String getDescriccao() {
-        return descriccao;
+    public String getDescricao() {
+        return descricao;
     }
 
     public void setId(int id) {
@@ -105,7 +105,7 @@ public class ServicoExecutado {
         this.valorTotal = valorTotal;
     }
 
-    public void setDescriccao(String descriccao) {
-        this.descriccao = descriccao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }
