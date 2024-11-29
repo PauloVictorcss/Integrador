@@ -5,7 +5,7 @@ import java.sql.Date;
 public class OS {
     private int id;
     private String placaVeiculo;
-    private EnumStatus stauts;
+    private EnumStatus status;
     private Date dataInicio;
     private Date dataFim;
     private double valorTotal;
@@ -15,9 +15,9 @@ public class OS {
     public OS() {
     }
 
-    public OS(String placaVeiculo, EnumStatus stauts, Date dataInicio, Date dataFim, double valorTotal, double valorPago, String cidade) {
+    public OS(String placaVeiculo, EnumStatus status, Date dataInicio, Date dataFim, double valorTotal, double valorPago, String cidade) {
         this.placaVeiculo = placaVeiculo;
-        this.stauts = stauts;
+        this.status = status;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.valorTotal = valorTotal;
@@ -33,8 +33,8 @@ public class OS {
         return placaVeiculo;
     }
 
-    public EnumStatus getStauts() {
-        return stauts;
+    public EnumStatus getStatus() {
+        return status;
     }
 
     public Date getDataInicio() {
@@ -65,8 +65,8 @@ public class OS {
         this.placaVeiculo = placaVeiculo;
     }
 
-    public void setStauts(EnumStatus stauts) {
-        this.stauts = stauts;
+    public void setStatus(EnumStatus status) {
+        this.status = status;
     }
 
     public void setDataInicio(Date dataInicio) {

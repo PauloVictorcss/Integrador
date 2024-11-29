@@ -1,6 +1,7 @@
 package persistency;
 
 import Tools.ConexaoBD;
+import static Tools.Validacoes.contarDigitos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,8 +21,8 @@ public class ServicoExecutadoDAO implements IServicoExecutadoCRUD {
     
     @Override
     public void incluir(ServicoExecutado objServico) throws Exception {
-        if (objServico.getIdServico() < 0) throw new Exception("Id do serviço é obrigatório");
-        if (objServico.getIdOS() < 0) throw new Exception("Id da OS é obrigatório");
+        if (objServico.getIdServico() <= 0 || contarDigitos(objServico.getIdServico ()) < 1) throw new Exception("Id do serviço é obrigatório");
+        if (objServico.getIdOS() <= 0 || contarDigitos(objServico.getIdOS ()) < 1) throw new Exception("Id da OS é obrigatório");
         if (objServico.getDataInicio() == null) throw new Exception("Data de Início é obrigatória");
         if (objServico.getQuantidade() < 0) throw new Exception("Quantidade não pode ser negativa");
         if (objServico.getValorUnitario() < 0) throw new Exception("Valor unitário não pode ser negativo");
@@ -31,7 +32,7 @@ public class ServicoExecutadoDAO implements IServicoExecutadoCRUD {
         objServico.setValorTotal(objServico.getValorUnitario() * objServico.getQuantidade());
         
         try {
-            String sql =  "insert into Peca(idOS, idServico, DataInicio, DataFim, quantidade, valorUnitario, valorTotal, funcionarioId, descricao)"
+            String sql =  "insert into ServicoExecutado(idOS, idServico, dataInicio, dataFim, quantidade, valorUnitario, valorTotal, funcionarioId, descricao)"
                     +     "values(?,?,?,?,?,?::money,?::money,?,?);";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdOS());
@@ -93,7 +94,7 @@ public class ServicoExecutadoDAO implements IServicoExecutadoCRUD {
         objServico.setValorTotal(objServico.getValorUnitario() * objServico.getQuantidade());
         
         try {
-            String sql = "UPDATE Peca SET idOS = ?, idServico = ?, dataInicio = ?, dataFim = ?, quantidade = ?, valorUnitario= ?::money,"
+            String sql = "UPDATE ServicoExecutado SET idOS = ?, idServico = ?, dataInicio = ?, dataFim = ?, quantidade = ?, valorUnitario= ?::money,"
                     + "valorUnitario= ?::Total,  funcionarioId = ?, descricao = ? WHERE id = ?";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdOS());

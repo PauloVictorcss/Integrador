@@ -1,6 +1,7 @@
 package persistency;
 
 import Tools.ConexaoBD;
+import static Tools.Validacoes.contarDigitos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +30,7 @@ public class PecaSubstituirDAO implements IPecaSubstituirCRUD {
         objServico.setValorTotal(objServico.getValorUnitario() * objServico.getQuantidade());
         
         try {
-            String sql =  "insert into Peca(idPeca, idOS, quantidade, descricao, valorUnitario, valorTotal)"
+            String sql =  "insert into PecaSubstituir(idPeca, idOS, quantidade, descricao, valorUnitario, valorTotal)"
                     +     "values(?,?,?,?,?::money,?::money);";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdPeca());
@@ -74,8 +75,8 @@ public class PecaSubstituirDAO implements IPecaSubstituirCRUD {
     
     @Override
     public void editar(PecaSubstituir objServico) throws Exception {
-        if (objServico.getIdPeca() < 0) throw new Exception("Id da peça é obrigatório");
-        if (objServico.getIdOS() < 0) throw new Exception("Id da OS é obrigatório");
+        if (objServico.getIdPeca() <= 0 || contarDigitos(objServico.getIdPeca ()) < 1) throw new Exception("Id da peça é obrigatório");
+        if (objServico.getIdOS() <= 0 || contarDigitos(objServico.getIdOS ()) < 1) throw new Exception("Id da OS é obrigatório");
         if (objServico.getQuantidade() < 0) throw new Exception("Quantidade não pode ser negativa");
         if (objServico.getDescricao() == null || "".equals(objServico.getDescricao())) throw new Exception("Descrição é obrigatório");
         if (objServico.getValorUnitario() < 0) throw new Exception("Valor unitário não pode ser negativo");

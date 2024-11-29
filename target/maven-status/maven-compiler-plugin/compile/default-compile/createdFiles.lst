@@ -2,6 +2,8 @@ models\Funcionario.class
 persistency\PecaDAO.class
 persistency\MarcaDAO.class
 Tools\Main.class
+persistency\PecaSubstituirDAO.class
+persistency\ServicoExecutadoDAO.class
 models\VeiculoAcessorio.class
 models\Servico.class
 persistency\FuncionarioDAO.class
@@ -9,6 +11,8 @@ models\OS.class
 models\Marca.class
 models\interfaces\IServicoCRUD.class
 models\interfaces\IFuncionarioCRUD.class
+models\interfaces\IPecaSubstituirCRUD.class
+models\interfaces\IServicoExecutadoCRUD.class
 models\Peca.class
 models\PecaSubstituir.class
 models\EnumStatus.class
@@ -17,6 +21,7 @@ persistency\AcessorioDAO.class
 models\Veiculo.class
 models\PessoaFisica.class
 Tools\ConexaoBD.class
+Tools\Validacoes.class
 models\ServicoExecutado.class
 models\interfaces\IOficinaCRUD.class
 models\interfaces\IPecaCRUD.class

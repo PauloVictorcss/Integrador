@@ -7,20 +7,20 @@ public class Veiculo {
     private String renavan;
     private int anoFabricacao;
     private int anoModelo;
-    private int quliometragem;
+    private int quilometragem;
     private String identificadorPatrimonio;
 
     public Veiculo() {
     }
 
-    public Veiculo(String placa, int idModelo, String chassi, String renavan, int anoFabricacao, int anoModelo, int quliometragem, String identificadorPatrimonio) {
+    public Veiculo(String placa, int idModelo, String chassi, String renavan, int anoFabricacao, int anoModelo, int quilometragem, String identificadorPatrimonio) {
         this.placa = placa;
         this.idModelo = idModelo;
         this.chassi = chassi;
         this.renavan = renavan;
         this.anoFabricacao = anoFabricacao;
         this.anoModelo = anoModelo;
-        this.quliometragem = quliometragem;
+        this.quilometragem = quilometragem;
         this.identificadorPatrimonio = identificadorPatrimonio;
     }
 
@@ -48,8 +48,8 @@ public class Veiculo {
         return anoModelo;
     }
 
-    public int getQuliometragem() {
-        return quliometragem;
+    public int getQuilometragem() {
+        return quilometragem;
     }
 
     public String getIdentificadorPatrimonio() {
@@ -80,8 +80,8 @@ public class Veiculo {
         this.anoModelo = anoModelo;
     }
 
-    public void setQuliometragem(int quliometragem) {
-        this.quliometragem = quliometragem;
+    public void setQuilometragem(int quilometragem) {
+        this.quilometragem = quilometragem;
     }
 
     public void setIdentificadorPatrimonio(String identificadorPatrimonio) {
