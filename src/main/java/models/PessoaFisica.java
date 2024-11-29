@@ -1,8 +1,11 @@
 package models;
 
+import java.sql.Date;
+
 public class PessoaFisica {
     private int idCliente;
     private String cpf;
+    private Date dataDeNascimento;
 
     public PessoaFisica() {}
 
@@ -26,6 +29,14 @@ public class PessoaFisica {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+    
+    public void setDataDeNascimento(Date dataDeNascimento) {
+        this.dataDeNascimento = dataDeNascimento;
+    }
+
+    public Date getDataDeNascimento() {
+        return dataDeNascimento;
     }
 }
 
