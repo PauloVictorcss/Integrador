@@ -58,6 +58,57 @@ public class MarcaDAO implements IMarcaCRUD {
         }
         return null;  
     }
+    
+    @Override
+    public Marca buscaPorId(int id) throws Exception {
+        if (id <= 0) throw new Exception("ID inválido");  // Verifica se o ID é válido
+
+        Marca marca = null;
+        String sql = "SELECT * FROM Marca WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                marca = new Marca();
+                marca.setId(rs.getInt("id"));
+                marca.setNome(rs.getString("nome"));
+                marca.setDescricao(rs.getString("descricao"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Marca por ID: " + e.getMessage());
+        }
+
+        return marca;  // Retorna a marca encontrada ou null
+    }
+    
+    @Override
+    public ArrayList<Marca> buscaPorNome(String nome) throws Exception {
+        if (nome == null || "".equals(nome)) throw new Exception("Nome é obrigatório");
+
+        ArrayList<Marca> listaDeMarcas = new ArrayList<>();
+        String sql = "SELECT * FROM Marca WHERE nome LIKE ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + nome + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Marca marca = new Marca();
+                marca.setId(rs.getInt("id"));
+                marca.setNome(rs.getString("nome"));
+                marca.setDescricao(rs.getString("descricao"));
+                listaDeMarcas.add(marca);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Marca por nome: " + e.getMessage());
+        }
+
+        return listaDeMarcas;
+    }
 
     @Override
     public void editar(Marca objServico) throws Exception {

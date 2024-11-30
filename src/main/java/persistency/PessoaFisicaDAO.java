@@ -61,7 +61,55 @@ public class PessoaFisicaDAO implements IPessoaFisicaCRUD {
         }
         return null;  
     }
-  
+    
+    @Override
+    public PessoaFisica buscaPorIdCliente(int idCliente) throws Exception {
+        PessoaFisica pessoaFisica = null;
+        String sql = "SELECT * FROM PessoaFisica WHERE idCliente = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idCliente);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                pessoaFisica = new PessoaFisica();
+                pessoaFisica.setIdCliente(rs.getInt("idCliente"));
+                pessoaFisica.setCpf(rs.getString("cpf"));
+                pessoaFisica.setDataDeNascimento(rs.getDate("dataDeNascimento"));
+            }
+            return pessoaFisica;
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Pessoa Física por ID: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public PessoaFisica buscaPorCpf(String cpf) throws Exception {
+        PessoaFisica pessoaFisica = null;
+        if (cpf == null || cpf.trim().isEmpty()) {
+            throw new Exception("O CPF é obrigatório.");
+        }
+
+        String sql = "SELECT * FROM PessoaFisica WHERE cpf = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, cpf);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                pessoaFisica = new PessoaFisica();
+                pessoaFisica.setIdCliente(rs.getInt("idCliente"));
+                pessoaFisica.setCpf(rs.getString("cpf"));
+                pessoaFisica.setDataDeNascimento(rs.getDate("dataDeNascimento"));
+            }
+            return pessoaFisica;
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Pessoa Física por CPF: " + e.getMessage());
+        }
+    }
+
     @Override
     public void editar(PessoaFisica objServico) throws Exception {
         if (objServico.getIdCliente() <= 0 || contarDigitos(objServico.getIdCliente ()) < 1) throw new Exception("Id do cliente é obrigatório");

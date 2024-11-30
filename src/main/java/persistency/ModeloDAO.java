@@ -52,7 +52,7 @@ public class ModeloDAO implements IModeloCRUD {
                 Modelo objModelos = new Modelo();
                 objModelos.setId(rs.getInt("id"));
                 objModelos.setNome(rs.getString("nome"));
-                objModelos.setDecricao(rs.getString("descricao"));
+                objModelos.setDescricao(rs.getString("descricao"));
                 objModelos.setIdMarca(rs.getInt("idMarca"));
                 listaDeModelos.add(objModelos);
             }
@@ -61,6 +61,57 @@ public class ModeloDAO implements IModeloCRUD {
             e.printStackTrace();
         }
         return null;  
+    }
+    
+    @Override
+    public Modelo buscaPorId(int id) throws Exception {
+        if (id <= 0) throw new Exception("ID inválido");
+
+        Modelo modelo = null;
+        String sql = "SELECT * FROM Modelo WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                modelo = new Modelo();
+                modelo.setId(rs.getInt("id"));
+                modelo.setNome(rs.getString("nome"));
+                modelo.setDescricao(rs.getString("descricao"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Modelo por ID: " + e.getMessage());
+        }
+
+        return modelo;  // Retorna a marca encontrada ou null
+    }
+    
+    @Override
+    public ArrayList<Modelo> buscaPorNome(String nome) throws Exception {
+        if (nome == null || "".equals(nome)) throw new Exception("Nome é obrigatório");
+
+        ArrayList<Modelo> listaDeModelos = new ArrayList<>();
+        String sql = "SELECT * FROM Modelo WHERE nome LIKE ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + nome + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Modelo modelo = new Modelo();
+                modelo.setId(rs.getInt("id"));
+                modelo.setNome(rs.getString("nome"));
+                modelo.setDescricao(rs.getString("descricao"));
+                listaDeModelos.add(modelo);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Modelo por nome: " + e.getMessage());
+        }
+
+        return listaDeModelos;
     }
 
     @Override

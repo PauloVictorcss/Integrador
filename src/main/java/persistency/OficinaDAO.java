@@ -82,7 +82,39 @@ public class OficinaDAO implements IOficinaCRUD {
         }
         return null;  
     }
-  
+    
+    @Override
+    public Oficina buscaPorNome(String nomeOficina) throws Exception {
+        if (nomeOficina == null || nomeOficina.trim().isEmpty()) throw new Exception("O nome da oficina é obrigatório.");
+
+        Oficina oficinaEncontrada = null;
+        String sql = "SELECT * FROM Oficina WHERE nomeOficina = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, nomeOficina);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                oficinaEncontrada = new Oficina();
+                oficinaEncontrada.setNomeDaOficina(rs.getString("nomeOficina"));
+                oficinaEncontrada.setEmail(rs.getString("email"));
+                oficinaEncontrada.setDdi(rs.getInt("ddi"));
+                oficinaEncontrada.setDdd(rs.getInt("ddd"));
+                oficinaEncontrada.setNumeroTelefone(rs.getInt("numeroTelefone"));
+                oficinaEncontrada.setLogradouro(rs.getString("logradouro"));
+                oficinaEncontrada.setNumeroEndereco(rs.getInt("numeroEndereco"));
+                oficinaEncontrada.setComplemento(rs.getString("complemento"));
+                oficinaEncontrada.setSetor(rs.getString("setor"));
+                oficinaEncontrada.setCidade(rs.getString("cidade"));
+            }
+
+            return oficinaEncontrada;
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar a oficina pelo nome: " + e.getMessage());
+        }
+    }
+
     @Override
     public void editar(Oficina objServico) throws Exception {
         if (objServico.getNomeDaOficina() == null || "".equals(objServico.getNomeDaOficina())) throw new Exception("Nome é obrigatório");

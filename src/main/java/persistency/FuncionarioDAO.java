@@ -71,6 +71,110 @@ public class FuncionarioDAO implements IFuncionarioCRUD {
         }
         return null;  
     }
+    
+    @Override
+    public ArrayList<String> obterListaDeNomesFuncionarios() throws Exception {
+        ArrayList<String> listaDeNomes = new ArrayList<>();
+        String sql = "SELECT nome FROM Funcionario ORDER BY nome";
+
+        try {
+            Statement statement = conexao.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                listaDeNomes.add(nome);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao obter lista de funcionários: " + e.getMessage());
+        }
+
+        return listaDeNomes;
+    }
+
+    @Override
+    public Funcionario buscaPorId(int id) throws Exception {
+        Funcionario funcionario = null;
+        String sql = "SELECT * FROM Funcionario WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setDataEntrada(rs.getDate("dataEntrada"));
+                funcionario.setDataSaida(rs.getDate("dataSaida"));
+                funcionario.setTelefone(rs.getInt("telefone"));
+                funcionario.setEmail(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Funcionario por ID: " + e.getMessage());
+        }
+
+        return funcionario;
+    }
+    
+    @Override
+    public ArrayList<Funcionario> buscaPorNome(String nome) throws Exception {
+        ArrayList<Funcionario> listaDeFuncionarios = new ArrayList<>();
+        if (nome == null || nome.isEmpty()) throw new Exception("Nome é obrigatório");
+
+        String sql = "SELECT * FROM Funcionario WHERE nome LIKE ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + nome + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Funcionario funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setDataEntrada(rs.getDate("dataEntrada"));
+                funcionario.setDataSaida(rs.getDate("dataSaida"));
+                funcionario.setTelefone(rs.getInt("telefone"));
+                funcionario.setEmail(rs.getString("email"));
+                listaDeFuncionarios.add(funcionario);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Funcionário por nome: " + e.getMessage());
+        }
+
+        return listaDeFuncionarios;
+    }
+    
+    @Override
+    public Funcionario buscaPorCpf(String cpf) throws Exception {
+        if (cpf == null || "".equals(cpf)) throw new Exception("CPF é obrigatório");
+
+        Funcionario funcionario = null;
+        String sql = "SELECT * FROM Funcionario WHERE cpf = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, cpf);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                funcionario = new Funcionario();
+                funcionario.setId(rs.getInt("id"));
+                funcionario.setCpf(rs.getString("cpf"));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setDataEntrada(rs.getDate("dataEntrada"));
+                funcionario.setDataSaida(rs.getDate("dataSaida"));
+                funcionario.setTelefone(rs.getInt("telefone"));
+                funcionario.setEmail(rs.getString("email"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Funcionario por CPF: " + e.getMessage());
+        }
+
+        return funcionario;
+    }
   
     @Override
     public void editar(Funcionario objServico) throws Exception {

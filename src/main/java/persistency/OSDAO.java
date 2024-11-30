@@ -31,7 +31,7 @@ public class OSDAO implements IOSCRUD {;
         
         try {
             String sql =  "insert into OS(status, placaVeiculo, dataInicio, dataFim, valorTotal, valorPago, cidade)"
-                    +     "values(?,?,?,?,?::money,?::money,?);";
+                    +     "values(?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, objServico.getStatus().name());
             preparedStatement.setString(2, objServico.getPlacaVeiculo());
@@ -76,6 +76,63 @@ public class OSDAO implements IOSCRUD {;
     }
     
     @Override
+    public OS buscarPorId(int id) throws Exception {
+        OS os = null;
+        String sql = "SELECT * FROM OS WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                os = new OS();
+                os.setId(rs.getInt("id"));
+                os.setStatus(EnumStatus.valueOf(rs.getString("status")));
+                os.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                os.setDataInicio(rs.getDate("dataInicio"));
+                os.setDataFim(rs.getDate("dataFim"));
+                os.setValorTotal(rs.getDouble("valorTotal"));
+                os.setValorPago(rs.getDouble("valorPago"));
+                os.setCidade(rs.getString("cidade"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar OS por ID: " + e.getMessage());
+        }
+
+        return os;
+    }
+    
+    @Override
+    public ArrayList<OS> buscarPorStatus(EnumStatus status) throws Exception {
+        ArrayList<OS> listaDeOSs = new ArrayList<>();
+        String sql = "SELECT * FROM OS WHERE status = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, status.name());
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                OS os = new OS();
+                os.setId(rs.getInt("id"));
+                os.setStatus(EnumStatus.valueOf(rs.getString("status")));
+                os.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                os.setDataInicio(rs.getDate("dataInicio"));
+                os.setDataFim(rs.getDate("dataFim"));
+                os.setValorTotal(rs.getDouble("valorTotal"));
+                os.setValorPago(rs.getDouble("valorPago"));
+                os.setCidade(rs.getString("cidade"));
+                listaDeOSs.add(os);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar OS por Status: " + e.getMessage());
+        }
+
+        return listaDeOSs;
+    }
+
+    @Override
     public void editar(OS objServico) throws Exception {
         if (objServico.getStatus() == null || "".equals(objServico.getStatus().toString())) throw new Exception("Status é obrigatório");
         if (objServico.getPlacaVeiculo() == null || "".equals(objServico.getPlacaVeiculo())) throw new Exception("Placa do veiculo é obrigatória");
@@ -86,8 +143,8 @@ public class OSDAO implements IOSCRUD {;
         if (objServico.getCidade() == null || "".equals(objServico.getCidade())) objServico.setCidade("Goiânia");
         
         try {
-            String sql = "UPDATE OS SET status = ?, placaVeiculo = ?, dataInicio = ?, dataFim = ?, valorTotal= ?::money,"
-                    + "valorPago= ?::money,  cidade = ? WHERE id = ?";
+            String sql = "UPDATE OS SET status = ?, placaVeiculo = ?, dataInicio = ?, dataFim = ?, valorTotal= ?,"
+                    + "valorPago= ?,  cidade = ? WHERE id = ?";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setString(1, objServico.getStatus().name());
             preparedStatement.setString(2, objServico.getPlacaVeiculo());

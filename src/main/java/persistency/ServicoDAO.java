@@ -63,6 +63,79 @@ public class ServicoDAO implements IServicoCRUD {
     }
   
     @Override
+    public ArrayList<String> obterListaDeNomesServicos() throws Exception {
+        ArrayList<String> listaDeNomes = new ArrayList<>();
+        String sql = "SELECT nome FROM Servico ORDER BY nome";
+
+        try {
+            Statement statement = conexao.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String nome = rs.getString("nome");
+                listaDeNomes.add(nome);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao obter lista de nomes de serviços: " + e.getMessage());
+        }
+
+        return listaDeNomes;
+    }
+
+    @Override
+    public Servico buscaPorId(int id) throws Exception {
+        String sql = "SELECT * FROM Servico WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                Servico objServico = new Servico();
+                objServico.setId(rs.getInt("id"));
+                objServico.setNome(rs.getString("nome"));
+                objServico.setDescricao(rs.getString("descricao"));
+                objServico.setValorUnitario(rs.getDouble("valorUnitario"));
+                return objServico;
+            } else {
+                throw new Exception("Serviço não encontrado com o id: " + id);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar serviço por id: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ArrayList<Servico> buscaPorNome(String nome) throws Exception {
+        ArrayList<Servico> listaDeServicos = new ArrayList<>();
+        String sql = "SELECT * FROM Servico WHERE nome LIKE ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, "%" + nome + "%");
+
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Servico objServico = new Servico();
+                objServico.setId(rs.getInt("id"));
+                objServico.setNome(rs.getString("nome"));
+                objServico.setDescricao(rs.getString("descricao"));
+                objServico.setValorUnitario(rs.getDouble("valorUnitario"));
+                listaDeServicos.add(objServico);
+            }
+
+            if (listaDeServicos.isEmpty()) {
+                throw new Exception("Nenhum serviço encontrado com o nome: " + nome);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar serviços por nome: " + e.getMessage());
+        }
+
+        return listaDeServicos;
+    }
+
+    @Override
     public void editar(Servico objServico) throws Exception {
         if (objServico.getNome() == null || "".equals(objServico.getNome())) throw new Exception("Nome é obrigatório");
         if (objServico.getDescricao() == null || "".equals(objServico.getDescricao())) throw new Exception("Descricao é obrigatória");

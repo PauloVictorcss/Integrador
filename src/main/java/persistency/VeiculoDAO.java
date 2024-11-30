@@ -77,6 +77,55 @@ public class VeiculoDAO implements IVeiculoCRUD {
         }
         return null;  
     }
+    
+    @Override
+    public ArrayList<String> obterListaDePlacasVeiculos() throws Exception {
+        ArrayList<String> listaDePlacas = new ArrayList<>();
+        String sql = "SELECT placa FROM Veiculo ORDER BY placa";
+
+        try {
+            Statement statement = conexao.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String placa = rs.getString("placa");
+                listaDePlacas.add(placa);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao obter lista de placas de veículos: " + e.getMessage());
+        }
+
+        return listaDePlacas;  // Retorna a lista de placas
+    }
+    
+    @Override
+    public Veiculo buscaPorPlaca(String placa) throws Exception {
+        if (placa == null || "".equals(placa)) throw new Exception("Placa é obrigatória");
+
+        Veiculo veiculo = null;
+        String sql = "SELECT * FROM Veiculo WHERE placa = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, placa);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                veiculo = new Veiculo();
+                veiculo.setPlaca(rs.getString("placa"));
+                veiculo.setIdModelo(rs.getInt("idModelo"));
+                veiculo.setChassi(rs.getString("chassi"));
+                veiculo.setRenavan(rs.getString("renavan"));
+                veiculo.setAnoFabricacao(rs.getInt("anoFabricacao"));
+                veiculo.setAnoModelo(rs.getInt("anoModelo"));
+                veiculo.setIdentificadorPatrimonio(rs.getString("identificadorPatrimonio"));
+                veiculo.setQuilometragem(rs.getInt("quilometragem"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Veículo por placa: " + e.getMessage());
+        }
+
+        return veiculo;  // Retorna o veículo encontrado ou null
+    }
   
     @Override
     public void editar(Veiculo objServico) throws Exception {

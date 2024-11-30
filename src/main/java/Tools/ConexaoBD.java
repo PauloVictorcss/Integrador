@@ -28,8 +28,8 @@ public class ConexaoBD {
       //Erro no banco de dados: usuario, senha ou banco de dados 
       throw new Exception("Ocorreu erro no banco: " + erro.getMessage());
     } 
-    return conexao;
-        
-  }
+    return conexao;     
     
+  }
+  
 }

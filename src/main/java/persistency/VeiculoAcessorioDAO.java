@@ -58,6 +58,82 @@ public class VeiculoAcessorioDAO implements IVeiculoAcessorioCRUD {
         }
         return null;  
     }
+    
+    @Override
+    public VeiculoAcessorio buscarPorId(int id) throws Exception {
+        if (id <= 0) throw new Exception("ID inválido");
+
+        VeiculoAcessorio acessorio = null;
+        String sql = "SELECT * FROM VeiculoAcessorio WHERE id = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                acessorio = new VeiculoAcessorio();
+                acessorio.setId(rs.getInt("id"));
+                acessorio.setNomeAcessorio(rs.getString("nomeAcessorio"));
+                acessorio.setPlacaVeiculo(rs.getString("placaVeiculo"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar VeiculoAcessorio por id: " + e.getMessage());
+        }
+
+        return acessorio;
+    }
+
+    
+    @Override
+    public ArrayList<VeiculoAcessorio> buscarPorNomeAcessorioNoVeiculo(String nome) throws Exception {
+        if (nome == null || "".equals(nome))  throw new Exception("Nome do acessório é obrigatório");
+
+        ArrayList<VeiculoAcessorio> listaDeAcessorios = new ArrayList<>();
+        String sql = "SELECT * FROM VeiculoAcessorio WHERE nomeAcessorio = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, nome);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                VeiculoAcessorio acessorio = new VeiculoAcessorio();
+                acessorio.setId(rs.getInt("id"));
+                acessorio.setNomeAcessorio(rs.getString("nomeAcessorio"));
+                acessorio.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                listaDeAcessorios.add(acessorio);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar VeiculoAcessorio por nomeAcessorio: " + e.getMessage());
+        }
+
+        return listaDeAcessorios.isEmpty() ? null : listaDeAcessorios;
+    }
+    
+    @Override
+    public ArrayList<VeiculoAcessorio> buscarPorPlacaVeiculo(String placa) throws Exception {
+        if (placa == null || "".equals(placa))  throw new Exception("Placa do veículo é obrigatória");
+
+        ArrayList<VeiculoAcessorio> listaDeAcessorios = new ArrayList<>();
+        String sql = "SELECT * FROM VeiculoAcessorio WHERE placaVeiculo = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, placa);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                VeiculoAcessorio acessorio = new VeiculoAcessorio();
+                acessorio.setId(rs.getInt("id"));
+                acessorio.setNomeAcessorio(rs.getString("nomeAcessorio"));
+                acessorio.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                listaDeAcessorios.add(acessorio);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar VeiculoAcessorio por placaVeiculo: " + e.getMessage());
+        }
+
+        return listaDeAcessorios.isEmpty() ? null : listaDeAcessorios;
+    }
 
     @Override
     public void editar(VeiculoAcessorio objServico) throws Exception {

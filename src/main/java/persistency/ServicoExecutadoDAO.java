@@ -33,7 +33,7 @@ public class ServicoExecutadoDAO implements IServicoExecutadoCRUD {
         
         try {
             String sql =  "insert into ServicoExecutado(idOS, idServico, dataInicio, dataFim, quantidade, valorUnitario, valorTotal, funcionarioId, descricao)"
-                    +     "values(?,?,?,?,?,?::money,?::money,?,?);";
+                    +     "values(?,?,?,?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdOS());
             preparedStatement.setInt(2, objServico.getIdServico());
@@ -82,6 +82,98 @@ public class ServicoExecutadoDAO implements IServicoExecutadoCRUD {
     }
     
     @Override
+    public ServicoExecutado buscarPorId(int id) throws Exception {
+        ServicoExecutado servicoExecutado = null;
+        String sql = "SELECT * FROM ServicoExecutado WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+            
+            if (rs.next()) {
+                servicoExecutado = new ServicoExecutado();
+                servicoExecutado.setId(rs.getInt("id"));
+                servicoExecutado.setIdOS(rs.getInt("idOS"));
+                servicoExecutado.setIdServico(rs.getInt("idServico"));
+                servicoExecutado.setFuncionarioId(rs.getInt("funcionarioId"));
+                servicoExecutado.setDataInicio(rs.getDate("dataInicio"));
+                servicoExecutado.setDataFim(rs.getDate("dataFim"));
+                servicoExecutado.setQuantidade(rs.getInt("quantidade"));
+                servicoExecutado.setValorUnitario(rs.getDouble("valorUnitario"));
+                servicoExecutado.setValorTotal(rs.getDouble("valorTotal"));
+                servicoExecutado.setDescricao(rs.getString("descricao"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar ServicoExecutado por ID: " + e.getMessage());
+        }
+
+        return servicoExecutado;
+    }
+    
+    @Override
+    public ArrayList<ServicoExecutado> buscarPorIdServico(int idServico) throws Exception {
+        ArrayList<ServicoExecutado> listaDeServicosExecutados = new ArrayList<>();
+        String sql = "SELECT * FROM ServicoExecutado WHERE idServico = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idServico);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                ServicoExecutado servicoExecutado = new ServicoExecutado();
+                servicoExecutado.setId(rs.getInt("id"));
+                servicoExecutado.setIdOS(rs.getInt("idOS"));
+                servicoExecutado.setIdServico(rs.getInt("idServico"));
+                servicoExecutado.setFuncionarioId(rs.getInt("funcionarioId"));
+                servicoExecutado.setDataInicio(rs.getDate("dataInicio"));
+                servicoExecutado.setDataFim(rs.getDate("dataFim"));
+                servicoExecutado.setQuantidade(rs.getInt("quantidade"));
+                servicoExecutado.setValorUnitario(rs.getDouble("valorUnitario"));
+                servicoExecutado.setValorTotal(rs.getDouble("valorTotal"));
+                servicoExecutado.setDescricao(rs.getString("descricao"));
+                listaDeServicosExecutados.add(servicoExecutado);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar ServicoExecutado por idServico: " + e.getMessage());
+        }
+
+        return listaDeServicosExecutados;
+    }
+    
+    @Override
+    public ArrayList<ServicoExecutado> buscarPorIdOS(int idOS) throws Exception {
+        ArrayList<ServicoExecutado> listaDeServicosExecutados = new ArrayList<>();
+        String sql = "SELECT * FROM ServicoExecutado WHERE idOS = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idOS);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                ServicoExecutado servicoExecutado = new ServicoExecutado();
+                servicoExecutado.setId(rs.getInt("id"));
+                servicoExecutado.setIdOS(rs.getInt("idOS"));
+                servicoExecutado.setIdServico(rs.getInt("idServico"));
+                servicoExecutado.setFuncionarioId(rs.getInt("funcionarioId"));
+                servicoExecutado.setDataInicio(rs.getDate("dataInicio"));
+                servicoExecutado.setDataFim(rs.getDate("dataFim"));
+                servicoExecutado.setQuantidade(rs.getInt("quantidade"));
+                servicoExecutado.setValorUnitario(rs.getDouble("valorUnitario"));
+                servicoExecutado.setValorTotal(rs.getDouble("valorTotal"));
+                servicoExecutado.setDescricao(rs.getString("descricao"));
+                listaDeServicosExecutados.add(servicoExecutado);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar ServicoExecutado por idOS: " + e.getMessage());
+        }
+
+        return listaDeServicosExecutados;
+    }
+
+    @Override
     public void editar(ServicoExecutado objServico) throws Exception {
         if (objServico.getIdServico() < 0) throw new Exception("Id do serviço é obrigatório");
         if (objServico.getIdOS() < 0) throw new Exception("Id da OS é obrigatório");
@@ -94,8 +186,8 @@ public class ServicoExecutadoDAO implements IServicoExecutadoCRUD {
         objServico.setValorTotal(objServico.getValorUnitario() * objServico.getQuantidade());
         
         try {
-            String sql = "UPDATE ServicoExecutado SET idOS = ?, idServico = ?, dataInicio = ?, dataFim = ?, quantidade = ?, valorUnitario= ?::money,"
-                    + "valorUnitario= ?::Total,  funcionarioId = ?, descricao = ? WHERE id = ?";
+            String sql = "UPDATE ServicoExecutado SET idOS = ?, idServico = ?, dataInicio = ?, dataFim = ?, quantidade = ?, valorUnitario= ?,"
+                    + "valorUnitario= ?,  funcionarioId = ?, descricao = ? WHERE id = ?";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdOS());
             preparedStatement.setInt(2, objServico.getIdServico());

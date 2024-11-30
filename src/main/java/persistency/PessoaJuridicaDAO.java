@@ -79,7 +79,67 @@ public class PessoaJuridicaDAO implements IPessoaJuridicaCRUD {
         }
         return null;  
     }
-  
+    
+    @Override
+    public PessoaJuridica buscaPorIdCliente(int idCliente) throws Exception {
+        PessoaJuridica pessoaJuridica = null;
+        String sql = "SELECT * FROM PessoaJuridica WHERE idCliente = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idCliente);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                pessoaJuridica = new PessoaJuridica();
+                pessoaJuridica.setIdCliente(rs.getInt("idCliente"));
+                pessoaJuridica.setCnpj(rs.getString("cnpj"));
+                pessoaJuridica.setRazaoSocial(rs.getString("razaoSocial"));
+                pessoaJuridica.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+                pessoaJuridica.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                pessoaJuridica.setDdiContatoResponsavel(rs.getInt("ddiContatoResponsavel"));
+                pessoaJuridica.setDddContatoResponsavel(rs.getInt("dddContatoResponsavel"));
+                pessoaJuridica.setContatoResponsavel(rs.getInt("contatoResponsavel"));
+            }
+
+            return pessoaJuridica;
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Pessoa Jurídica por ID: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    public PessoaJuridica buscaPorCnpj(String cnpj) throws Exception {
+        PessoaJuridica pessoaJuridica = null;
+        if (cnpj == null || cnpj.trim().isEmpty()) {
+            throw new Exception("CNPJ é obrigatório.");
+        }
+
+        String sql = "SELECT * FROM PessoaJuridica WHERE cnpj = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, cnpj);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                pessoaJuridica = new PessoaJuridica();
+                pessoaJuridica.setIdCliente(rs.getInt("idCliente"));
+                pessoaJuridica.setCnpj(rs.getString("cnpj"));
+                pessoaJuridica.setRazaoSocial(rs.getString("razaoSocial"));
+                pessoaJuridica.setInscricaoEstadual(rs.getString("inscricaoEstadual"));
+                pessoaJuridica.setNomeResponsavel(rs.getString("nomeResponsavel"));
+                pessoaJuridica.setDdiContatoResponsavel(rs.getInt("ddiContatoResponsavel"));
+                pessoaJuridica.setDddContatoResponsavel(rs.getInt("dddContatoResponsavel"));
+                pessoaJuridica.setContatoResponsavel(rs.getInt("contatoResponsavel"));
+            }
+
+            return pessoaJuridica;
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Pessoa Jurídica por CNPJ: " + e.getMessage());
+        }
+    }
+    
     @Override
     public void editar(PessoaJuridica objServico) throws Exception {
         if (objServico.getIdCliente() <= 0 || contarDigitos(objServico.getIdCliente ()) < 1) throw new Exception("Id do cliente é obrigatório");

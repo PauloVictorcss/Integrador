@@ -31,7 +31,7 @@ public class PecaSubstituirDAO implements IPecaSubstituirCRUD {
         
         try {
             String sql =  "insert into PecaSubstituir(idPeca, idOS, quantidade, descricao, valorUnitario, valorTotal)"
-                    +     "values(?,?,?,?,?::money,?::money);";
+                    +     "values(?,?,?,?,?,?);";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdPeca());
             preparedStatement.setInt(2, objServico.getIdOS());
@@ -74,6 +74,85 @@ public class PecaSubstituirDAO implements IPecaSubstituirCRUD {
     }
     
     @Override
+    public PecaSubstituir buscaPorId(int id) throws Exception {
+        PecaSubstituir pecaSubstituir = null;
+        String sql = "SELECT * FROM PecaSubstituir WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                pecaSubstituir = new PecaSubstituir();
+                pecaSubstituir.setId(rs.getInt("id"));
+                pecaSubstituir.setIdOS(rs.getInt("idOS"));
+                pecaSubstituir.setIdPeca(rs.getInt("idPeca"));
+                pecaSubstituir.setDescricao(rs.getString("descricao"));
+                pecaSubstituir.setQuantidade(rs.getInt("quantidade"));
+                pecaSubstituir.setValorUnitario(rs.getDouble("valorUnitario"));
+
+                double valorTotal = pecaSubstituir.getQuantidade() * pecaSubstituir.getValorUnitario();
+                pecaSubstituir.setValorTotal(valorTotal);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar PecaSubstituir por ID: " + e.getMessage());
+        }
+
+        return pecaSubstituir;
+    }
+    
+    @Override
+    public ArrayList<PecaSubstituir> buscarPorIdPeca(int idPeca) throws Exception {
+        ArrayList<PecaSubstituir> listaDePecasSubstituir = new ArrayList<>();
+        String sql = "SELECT * FROM PecaSubstituir WHERE idPeca = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idPeca);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                PecaSubstituir pecaSubstituir = new PecaSubstituir();
+                pecaSubstituir.setId(rs.getInt("id"));
+                pecaSubstituir.setIdPeca(rs.getInt("idPeca"));
+                pecaSubstituir.setIdOS(rs.getInt("idOS"));
+                pecaSubstituir.setQuantidade(rs.getInt("quantidade"));
+                pecaSubstituir.setDescricao(rs.getString("descricao"));
+                pecaSubstituir.setValorUnitario(rs.getDouble("valorUnitario"));
+                pecaSubstituir.setValorTotal(rs.getDouble("valorTotal"));
+                listaDePecasSubstituir.add(pecaSubstituir);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar PecaSubstituir por idPeca: " + e.getMessage());
+        }
+        return listaDePecasSubstituir;
+    }
+    
+    @Override
+    public ArrayList<PecaSubstituir> buscarPorIdOS(int idOS) throws Exception {
+        ArrayList<PecaSubstituir> listaDePecasSubstituir = new ArrayList<>();
+        String sql = "SELECT * FROM PecaSubstituir WHERE idOS = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idOS);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                PecaSubstituir pecaSubstituir = new PecaSubstituir();
+                pecaSubstituir.setId(rs.getInt("id"));
+                pecaSubstituir.setIdPeca(rs.getInt("idPeca"));
+                pecaSubstituir.setIdOS(rs.getInt("idOS"));
+                pecaSubstituir.setQuantidade(rs.getInt("quantidade"));
+                pecaSubstituir.setDescricao(rs.getString("descricao"));
+                pecaSubstituir.setValorUnitario(rs.getDouble("valorUnitario"));
+                pecaSubstituir.setValorTotal(rs.getDouble("valorTotal"));
+                listaDePecasSubstituir.add(pecaSubstituir);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar PecaSubstituir por idOS: " + e.getMessage());
+        }
+        return listaDePecasSubstituir;
+    }
+
+    @Override
     public void editar(PecaSubstituir objServico) throws Exception {
         if (objServico.getIdPeca() <= 0 || contarDigitos(objServico.getIdPeca ()) < 1) throw new Exception("Id da peça é obrigatório");
         if (objServico.getIdOS() <= 0 || contarDigitos(objServico.getIdOS ()) < 1) throw new Exception("Id da OS é obrigatório");
@@ -84,7 +163,7 @@ public class PecaSubstituirDAO implements IPecaSubstituirCRUD {
         objServico.setValorTotal(objServico.getValorUnitario() * objServico.getQuantidade());
         
         try {
-            String sql = "UPDATE Peca SET idPeca = ?, idOS = ?, quantidade = ?, descricao = ?, valorUnitario= ?::money, valorUnitario= ?::Total WHERE id = ?";
+            String sql = "UPDATE Peca SET idPeca = ?, idOS = ?, quantidade = ?, descricao = ?, valorUnitario= ?, valorUnitario= ? WHERE id = ?";
             PreparedStatement preparedStatement = conexao.prepareStatement(sql);
             preparedStatement.setInt(1, objServico.getIdPeca());
             preparedStatement.setInt(2, objServico.getIdOS());

@@ -58,6 +58,29 @@ public class AcessorioDAO implements IAcessorioCRUD {
     }
     
     @Override
+    public Acessorio buscarPorNome(String nome) throws Exception {
+        if (nome == null || "".equals(nome))  throw new Exception("Nome é obrigatório");
+
+        Acessorio acessorio = null;
+        String sql = "SELECT * FROM Acessorios WHERE nome = ?";
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, nome);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                acessorio = new Acessorio();
+                acessorio.setNome(rs.getString("nome"));
+                acessorio.setDescricao(rs.getString("descricao"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar acessório por nome: " + e.getMessage());
+        }
+
+        return acessorio;
+    }
+    
+    @Override
     public void editar(Acessorio objServico) throws Exception {
         if (objServico.getNome() == null || "".equals(objServico.getNome())) throw new Exception("Nome é obrigatório");
         if (objServico.getDescricao() == null || "".equals(objServico.getDescricao())) throw new Exception("Descrição é obrigatória");

@@ -65,6 +65,83 @@ public class PropriedadeDAO implements IPropriedadeCRUD {
     }
     
     @Override
+    public Propriedade buscarPorId(int id) throws Exception {
+        Propriedade propriedade = null;
+        String sql = "SELECT * FROM Propriedade WHERE id = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                propriedade = new Propriedade();
+                propriedade.setId(rs.getInt("id"));
+                propriedade.setIdCliente(rs.getInt("idCliente"));
+                propriedade.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                propriedade.setDatainicio(rs.getDate("dataInicio"));
+                propriedade.setDataTermino(rs.getDate("dataTermino"));
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Propriedade por ID: " + e.getMessage());
+        }
+
+        return propriedade;
+    }
+
+    @Override
+    public ArrayList<Propriedade> buscarPorIdCliente(int idCliente) throws Exception {
+        ArrayList<Propriedade> listaDePropriedades = new ArrayList<>();
+        String sql = "SELECT * FROM Propriedade WHERE idCliente = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setInt(1, idCliente);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Propriedade propriedade = new Propriedade();
+                propriedade.setId(rs.getInt("id"));
+                propriedade.setIdCliente(rs.getInt("idCliente"));
+                propriedade.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                propriedade.setDatainicio(rs.getDate("dataInicio"));
+                propriedade.setDataTermino(rs.getDate("dataTermino"));
+                listaDePropriedades.add(propriedade);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Propriedade por ID Cliente: " + e.getMessage());
+        }
+
+        return listaDePropriedades;
+    }
+
+    @Override
+    public ArrayList<Propriedade> buscarPorPlacaVeiculo(String placaVeiculo) throws Exception {
+        ArrayList<Propriedade> listaDePropriedades = new ArrayList<>();
+        String sql = "SELECT * FROM Propriedade WHERE placaVeiculo = ?";
+
+        try {
+            PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+            preparedStatement.setString(1, placaVeiculo);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                Propriedade propriedade = new Propriedade();
+                propriedade.setId(rs.getInt("id"));
+                propriedade.setIdCliente(rs.getInt("idCliente"));
+                propriedade.setPlacaVeiculo(rs.getString("placaVeiculo"));
+                propriedade.setDatainicio(rs.getDate("dataInicio"));
+                propriedade.setDataTermino(rs.getDate("dataTermino"));
+                listaDePropriedades.add(propriedade);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Erro ao buscar Propriedade por Placa Veículo: " + e.getMessage());
+        }
+
+        return listaDePropriedades;
+    }
+
+    @Override
     public void editar(Propriedade objServico) throws Exception {
         if (objServico.getIdCliente() <= 0 || contarDigitos(objServico.getIdCliente ()) < 1) throw new Exception("Id do Cliente é obrigatório");
         if (objServico.getPlacaVeiculo() == null || "".equals(objServico.getPlacaVeiculo())) throw new Exception("Placa do veículo é obrigatório");
